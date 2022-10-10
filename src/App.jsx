@@ -15,6 +15,7 @@ export default function Hangman() {
   const [GuessedWords, setGuessedWords] = useState([]);
   const [correctGuesses, setCorrectGuesses] = useState([]);
   const [isRevealed, setIsRevealed] = useState(false);
+  const [guessCount, setGuessCount] = useState(0);
   function refreshPage() {
     window.location.reload(false);
   }
@@ -22,6 +23,7 @@ export default function Hangman() {
   const maskedWord = word.split('').map(letter => correctGuesses.includes(letter) ? letter : "_").join(" ");
 
   const validateCharacter = (alphabet) => {
+    setGuessCount(guessCount+1);
     setGuessedWords([...GuessedWords, alphabet]);
     if (word.includes(alphabet)) {
       setCorrectGuesses([...correctGuesses, alphabet]);
@@ -35,24 +37,25 @@ export default function Hangman() {
 
   return (
     <>
-      <div className={`transition-colors duration-300 w-screen h-screen ${!maskedWord.includes("_") ? "bg-green-900" : "bg-slate-900"} flex flex-col items-center justify-center`}>
-        <h1 className='text-white text-5xl p-8'>Guess The Word!</h1>
-        <p className='text-white text-2xl'>Type: {wordType}</p>
+      <div className={`transition-colors duration-300 w-screen min-h-screen max-h-content ${!maskedWord.includes("_") ? "bg-green-900" : "bg-slate-900"} flex flex-col items-center justify-center`}>
+        <h1 className='text-white text-center text-5xl p-8'>Guess The Word!</h1>
+        <p className='text-white text-center text-2xl'>Type: {wordType}</p>
         <div className='p-8 m-4 bg-slate-500 rounded-lg'>
-          <h2 className='text-white text-6xl' ref={answerRef}>{maskedWord}</h2>
+          <h2 className='text-white text-center text-6xl' ref={answerRef}>{maskedWord}</h2>
         </div>
 
-        <div className="grid grid-cols-12">
-          {alphabets.map((alphabet, index) => <button className="text-3xl bg-slate-500 p-3 m-3 text-white rounded-lg" id={alphabet} key={index} onClick={() => { validateCharacter(alphabet); }}>{alphabet}</button>)}
+        <div className="grid sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 grid-cols-4 p-8">
+          {alphabets.map((alphabet, index) => <button className="text-3xl bg-slate-500 p-3 m-3 text-white text-center rounded-lg" id={alphabet} key={index} onClick={() => { validateCharacter(alphabet); }}>{alphabet}</button>)}
         </div>
-        <div className='flex flex-row gap-x-8'>
+        <div className='flex flex-col sm:flex-row gap-8 items-center overflow-auto'>
           {!maskedWord.includes("_") ?
-            <p className='p-4 bg-green-500 rounded-lg'>{isRevealed ? "Answer Revealed" : "You Guessed it!"}</p> :
-            <div className='flex flex-row gap-x-8'>
-              <p className='p-4 bg-red-500 rounded-lg'>Haven't Guessed Yet</p>
-              <button className='bg-slate-500 p-4 rounded-lg' onClick={revealAnswer}>Reveal Answer</button>
+            <p className='p-4 bg-green-500 rounded-lg text-center'>{isRevealed ? "Answer Revealed" : "You Guessed it!"}</p> :
+            <div className='flex flex-row'>
+              <p className='p-4 bg-red-500 rounded-l-lg text-center'>Haven't Guessed Yet</p>
+              <button className='bg-slate-500 p-4 rounded-r-lg' onClick={revealAnswer}>Reveal Answer</button>
             </div>}
           <button className="bg-slate-500 p-4 rounded-lg" onClick={refreshPage}>Refresh</button>
+          <h1 className='text-white'>Guess Count: {guessCount}</h1>
         </div>
       </div>
     </>
