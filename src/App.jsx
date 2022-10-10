@@ -35,9 +35,9 @@ export default function Hangman() {
 
   return (
     <>
-      <div className='w-screen h-screen bg-slate-900 flex flex-col items-center justify-center'>
+      <div className={`transition-colors duration-300 w-screen h-screen ${!maskedWord.includes("_") ? "bg-green-900" : "bg-slate-900"} flex flex-col items-center justify-center`}>
         <h1 className='text-white text-5xl p-8'>Guess The Word!</h1>
-        <p className='text-white'>Type: {wordType}</p>
+        <p className='text-white text-2xl'>Type: {wordType}</p>
         <div className='p-8 m-4 bg-slate-500 rounded-lg'>
           <h2 className='text-white text-6xl' ref={answerRef}>{maskedWord}</h2>
         </div>
